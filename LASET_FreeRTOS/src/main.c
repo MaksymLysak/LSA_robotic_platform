@@ -30,8 +30,13 @@
 
 #include "struct_data.h"
 
+#include "init_config.h"
+
 #include "fun_for_USART.h"
 
+#include "odometry_msg.h"
+
+#include <math.h>
 
 
 /* Task priorities. */
@@ -42,26 +47,11 @@
 /* Max length for messages*/
 #define msg_length 30
 
-
-
-/* Configure RCC clocks */
-static void prvSetupRCC( void );
-
-/* Configure GPIO. */
-static void prvSetupGPIO( void );
-
-/* Função Interrupção */
-static void pvrIntrp(void);
-
-/********** Useful functions **********/
-/* USART2 configuration. */
-static void prvSetupUSART2( void );
-
-/***************************************/
-
-/* Encoders configuration. */
-static void prvTIMERs( void );
-
+#define wheelDiameter 0.07
+#define baseDist 0.189
+#define tickRevolution 64
+#define gearBox 70
+#define ticks2m(ticks) ((ticks*wheelDiameter*M_PI)/(tickRevolution*gearBox))
 
 
 
@@ -71,7 +61,7 @@ static void prvControlador(void *pvParametrs); 	// control
 static void prvReadUsart(void *pvParameters);	// process usart received messages
 static void prvMotorDrive(void *pvParameters); // set PWM to motors
 static void prvSendMessage(void *pvParameters); // send messages through USART
-
+static void prvOdometryTrack(void *pvParameters); // Make track of position and orientation
 
 
 
@@ -87,32 +77,6 @@ TaskHandle_t HandleTask4;
 TaskHandle_t HandleTask5;
 /* Task 6 handle variable. */
 TaskHandle_t HandleTask6;
-/* Task 7 handle variable. */
-TaskHandle_t HandleTask7;
-/* Task 8 handle variable. */
-TaskHandle_t HandleTask8;
-/* Task 9 handle variable. */
-TaskHandle_t HandleTask9;
-/* Task 10 handle variable. */
-TaskHandle_t HandleTask10;
-
-#define CNT1_INIT 0                  /* The initial value of the counter */
-#define CNT2_INIT 0                  /* The initial value of the counter */
-
-
-
-//Caraceterísticas da Roda
-float diametroRoda = 0.07 ;//m
-
-//Distância percorrida
-double ticks2m;
-
-
-// PWM Motores
-uint16_t IN1A = 0;
-uint16_t IN2A = 0;
-uint16_t IN1B = 0;
-uint16_t IN2B = 0;
 
 
 
@@ -123,68 +87,41 @@ QueueHandle_t xQueuePWM;
 QueueHandle_t xQueueMessageOut;
 QueueHandle_t xQueueVelCommand;
 
+/* Semaphers*/
+SemaphoreHandle_t xSemaphore_Ticks;
 
-// Struct
-//typedef struct
-//{
-//	int distB;
-//	int voltasB;
-//	int rpmB;
-//	int velB;
-//}DadosB;
+/*-----------------------------------------------------------*/
 
 int main( void )
 {
-
-	//ticks2m = (3.1415*diametroRoda)/4480;
-
 	/*Setup the hardware, RCC, GPIO, etc...*/
-
-	prvSetupRCC();
-    prvSetupGPIO();
-    prvTIMERs();
-    prvSetupUSART2();
-    pvrIntrp();
+	prvInitial_configuration();
 
     /* Create queues*/
-	xQueueTicks = xQueueCreate( 5, sizeof( Num_ticks ) ); /* Queue to send Encoder's ticks */
-	if( xQueueTicks == NULL )
-	{/* Queue was not created and must not be used. */
-		return 0;
-	}
-	xQueueUsart = xQueueCreate( msg_length, sizeof( char ) ); /* Queue to send received character from ISR */
-	if( xQueueTicks == NULL )
-	{/* Queue was not created and must not be used. */
-		return 0;
-	}
-	xQueuePWM = xQueueCreate( 2, sizeof( My_PWM ) ); /* Queue to send PWM*/
-	if( xQueueTicks == NULL )
-	{/* Queue was not created and must not be used. */
-		return 0;
-	}
-	xQueueMessageOut = xQueueCreate( 10, msg_length * sizeof( char ) ); /* Queue to send PWM*/
-	if( xQueueTicks == NULL )
-	{/* Queue was not created and must not be used. */
-		return 0;
-	}
-	xQueueVelCommand = xQueueCreate( 5, sizeof( uint8_t ) ); /* Queue to send velocity command to controller*/
-	if( xQueueTicks == NULL )
+	xQueueTicks 	 = xQueueCreate( 5, 		sizeof( Var_ticks )		  ); /* Queue to send Encoder's ticks */
+	xQueueUsart 	 = xQueueCreate( msg_length,sizeof( char ) 			  ); /* Queue to send received character from ISR */
+	xQueuePWM 		 = xQueueCreate( 2,  		sizeof( My_PWM ) 		  ); /* Queue to send PWM*/
+	xQueueMessageOut = xQueueCreate( 10, 		sizeof( char )*60 ); /* Queue to send PWM*/
+	xQueueVelCommand = xQueueCreate( 5, 		sizeof( uint8_t )      	  ); /* Queue to send velocity command to controller*/
+	if(( xQueueTicks == NULL )&&( xQueueUsart == NULL )&&( xQueuePWM == NULL )&&( xQueueMessageOut == NULL )&&( xQueueVelCommand == NULL ))
 	{/* Queue was not created and must not be used. */
 		return 0;
 	}
 
+	/* Create semaphore */
+	xSemaphore_Ticks = xSemaphoreCreateBinary();
+	if( xSemaphore_Ticks == NULL )/* There was insufficient FreeRTOS heap available for the semaphore to*/
+	{						/* be created successfully. */
+		return 0;
+	}
 
-
-
-
+	/* Create Tasks */
     xTaskCreate(prvReadEncoders, "EncoderReads", configMINIMAL_STACK_SIZE, NULL, mainEncoder_TASK_PRIORITY, &HandleTask1);
-    xTaskCreate(prvControlador, "Controlador", configMINIMAL_STACK_SIZE, NULL, mainEncoder_TASK_PRIORITY,&HandleTask2);
+    xTaskCreate(prvControlador, "Controlador", configMINIMAL_STACK_SIZE+300, NULL, mainEncoder_TASK_PRIORITY,&HandleTask2);
     xTaskCreate(prvReadUsart, "ReadUsart", configMINIMAL_STACK_SIZE+200, NULL, mainDistance_TASK_PRIORITY, &HandleTask3);
 	xTaskCreate(prvMotorDrive, "MotorDrive", configMINIMAL_STACK_SIZE, NULL, mainDistance_TASK_PRIORITY, &HandleTask4);
 	xTaskCreate(prvSendMessage, "SendUsart", configMINIMAL_STACK_SIZE, NULL, mainDistance_TASK_PRIORITY, &HandleTask5);
-
-
-
+	xTaskCreate(prvOdometryTrack, "Odometry", configMINIMAL_STACK_SIZE+200, NULL, mainDistance_TASK_PRIORITY, &HandleTask6);
 
     /* Start the scheduler. */
 	vTaskStartScheduler();
@@ -197,17 +134,68 @@ int main( void )
 
 static void prvReadEncoders(void *pvParameters)
 {
-	Num_ticks ticks;
+	Num_ticks ticks, ticksOld; ticksOld.dir=0; ticksOld.esq=0;
+	Var_ticks d_ticks;
 
 	for(;;)
 	{
-		//Guardar os valores dos Ticks encoderA
-		ticks.esq =TIM4->CNT;
-		//Guardar os valores dos Ticks encoderB
-		ticks.esq =TIM2->CNT;
+		ticks.dir =TIM4->CNT;	//Guardar os valores dos Ticks encoderA
+		ticks.esq =TIM2->CNT;	//Guardar os valores dos Ticks encoderB
 
-		xQueueSendToBack(xQueueTicks,(void*)&ticks,(TickType_t)portMAX_DELAY);
-		vTaskDelay( ( TickType_t ) 50 / portTICK_PERIOD_MS  );
+		/* Calculate ticks variation of each encoder */
+		d_ticks.esq = ticks.esq - ticksOld.esq;
+		if(d_ticks.esq/2000){
+			d_ticks.esq=d_ticks.esq/abs(d_ticks.esq)*(62720-MAX(ticks.esq,ticksOld.esq)+MIN(ticks.esq,ticksOld.esq));
+		}
+		d_ticks.dir = ticks.dir - ticksOld.dir;
+		if(d_ticks.dir/2000){
+			d_ticks.dir=d_ticks.dir/abs(d_ticks.dir)*(62720-MAX(ticks.esq,ticksOld.dir)+MIN(ticks.esq,ticksOld.dir));
+		}
+
+		/* Send to other tasks */
+		xQueueSendToBack(xQueueTicks,&d_ticks,(TickType_t)portMAX_DELAY);
+
+		/* Store to next iteration */
+		ticksOld.esq=ticks.esq;
+		ticksOld.dir=ticks.dir;
+
+		vTaskDelay( ( TickType_t ) 10 / portTICK_PERIOD_MS  );
+	}
+}
+
+/*-----------------------------------------------------------*/
+
+static void prvOdometryTrack(void *pvParameters){
+
+	Odometry odom=init_odom_var();
+	Var_ticks v_ticks;
+	float d_ticks, d_theta_i, theta=0, d_x=0, d_y=0, x=0, y=0;
+	char buf_x[15],buf_y[15],buf_th[15],buf[msg_length];
+
+
+	for(;;){
+		xQueuePeek( xQueueTicks, &v_ticks , ( TickType_t ) portMAX_DELAY );
+		xSemaphoreGive( xSemaphore_Ticks );
+
+		/* encoder variation */
+		d_ticks = ticks2m(	((float)v_ticks.esq + (float)v_ticks.dir)/2	);
+
+		d_theta_i = ticks2m(((float)v_ticks.dir - (float)v_ticks.esq)/baseDist);
+
+		theta += d_theta_i;
+
+
+		d_x = d_ticks*cos(theta);
+		d_y = d_ticks*sin(theta);
+
+		x+=d_x;
+		y+=d_y;
+
+		Float2String(x, buf_x);
+		Float2String(y, buf_y);
+		Float2String(theta, buf_th);
+		sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+		xQueueSendToBack(xQueueMessageOut,&buf,(TickType_t)1);
 	}
 }
 
@@ -215,36 +203,76 @@ static void prvReadEncoders(void *pvParameters)
 
 static void prvControlador(void *pvParametrs)
 {
-	Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0;
-	Var_ticks delta_ticks;
+	Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+	Var_ticks delta_ticks_real, delta_ticks_des;
 	uint8_t command=0;
+	My_PWM pwm_des, pwm_real;
+	pwm_real.esq=0;
 
-	My_PWM pwm;
-	pwm.esq=0; pwm.dir=0;
+	float erro=0, pwm=0,P=0;
 
-	char buf[msg_length];
+	char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+
+	int16_t veloc=0, vel_final=0;
 
 	for(;;){
 
-		ticks_old = ticks_new; /* safe previous ticks*/
-		xQueueReceive(xQueueTicks,(void*)&ticks_new,(TickType_t)portMAX_DELAY); /*Receive ticks from encoders*/
+		/* Update ticks*/
+		ticks_old.esq = ticks_new.esq; /* safe previous ticks*/
+		xSemaphoreTake( xSemaphore_Ticks, ( TickType_t ) portMAX_DELAY );
+		xQueueReceive(xQueueTicks,(void*)&delta_ticks_real,(TickType_t)portMAX_DELAY); /*Receive ticks from encoders*/
+		/* ticks variation in deltaT*/
 
-		delta_ticks.esq = ticks_new.esq - ticks_old.esq;
-		delta_ticks.dir = ticks_new.dir - ticks_old.dir;
+		//delta_ticks_real.dir = ticks_new.dir - ticks_old.dir;
 
-		sprintf(buf,"%d\n",delta_ticks.esq);
-		xQueueSendToBack(xQueueMessageOut,&buf,(TickType_t)2);
+		veloc=delta_ticks_real.esq;
 
-		if(xQueueReceive(xQueueVelCommand,&command,(TickType_t)2)== pdPASS ){
-			pwm.esq=command;
-			pwm.dir=command;
+		/* Receive Velocity command */
+		if(xQueueReceive(xQueueVelCommand,&command,(TickType_t)1)== pdPASS ){
+			//delta_ticks_des.esq=command;
+			//delta_ticks_des.dir=command;
+			vel_final=command;
 		}
 
+		/*--------------------------------------------------------*/
+		erro = (float)(vel_final-veloc);
+
+		if (erro!=0){
+			float abs_erro=abs(erro);
+			if		(abs_erro>30)	{P=7;}
+			else if	(abs_erro>20)	{P=5;}
+			else if	(abs_erro>15)	{P=2;}
+			else if	(abs_erro>10)	{P=1;}
+			else if	(abs_erro>5)	{P=0.5;}
+			else if	(abs_erro>0)	{P=0.1;}
+			else 					{P=0;}
+			P=P*(erro/abs_erro);
+			pwm=MAX(0,MIN(100,pwm+P));
+		}
+
+		pwm_real.esq=pwm;
+		pwm_real.dir=pwm;
+
+
+		/*--------------------------------------------------------*/
+
+
+		//pwm_real.dir=MAX(0,MIN(100,pwm_real.dir));
+		Float2String(pwm, buf_v);
+		//Float2String(erro, buf_erro);
+
+		//sprintf(buf,"%d	%s	%s	%s\n",veloc,buf_erro, buf_p,buf_v);
+		sprintf(buf,"%s\n",buf_v);
+		//xQueueSendToBack(xQueueMessageOut,&buf,(TickType_t)1);
+
+
+		/* Send P*/
+		xQueueSendToBack(xQueuePWM,&pwm_real,(TickType_t)portMAX_DELAY);
 
 //		teste = (float)delta_ticks.esq*3.14*0.07/(64*70);
 //		teste = 500*3.14*0.07/(64*70);
 
-		//vTaskDelay( ( TickType_t ) 10 / portTICK_PERIOD_MS  );
+		//vTaskDelay( ( `TickType_t ) 10 / portTICK_PERIOD_MS  );
 		//Float2String(teste,buf);
 	}
 }
@@ -257,21 +285,17 @@ static void prvControlador(void *pvParametrs)
 //TIM2->CNT = 0;
 
 static void prvMotorDrive(void *pvParameters){
-	char buf[msg_length];
+	//char buf[msg_length];
 	My_PWM pwm;
 	pwm.esq=0; pwm.dir=0;
-	uint8_t teste=100;
 
 	for(;;){
-//		xQueueReceive( xQueuePWM, &pwm,( TickType_t ) portMAX_DELAY );
-		sprintf(buf,"ESQ:%d Dir:%d\n", teste,teste);//pwm.esq,pwm.dir);
-		xQueueSendToBack(xQueueMessageOut,&buf,(TickType_t)2);
+		xQueueReceive( xQueuePWM, &pwm,( TickType_t ) portMAX_DELAY );
+		//sprintf(buf,"ESQ:%d Dir:%d\n", pwm.esq,pwm.dir);//pwm.esq,pwm.dir);
+		//xQueueSendToBack(xQueueMessageOut,&buf,(TickType_t)2);
 
-		TIM_SetCompare2(TIM3,teste);//pwm.dir);
-		TIM_SetCompare1(TIM3,teste);//pwm.esq);
-
-		vTaskDelay( ( TickType_t ) 100 / portTICK_PERIOD_MS  );
-		//teste++;
+		TIM_SetCompare2(TIM3,pwm.dir); // laranja perto do cabo
+		TIM_SetCompare1(TIM3,pwm.esq); // azul  mais longe do cabo
 	}
 }
 
@@ -286,14 +310,12 @@ static void prvReadUsart(void *pvParameters)
 		if( xQueueReceive( xQueueUsart, &rx,( TickType_t ) portMAX_DELAY ) == pdPASS )
 		{/* process receive message */
 
-
-			if(rx ==42317){	command=255;
-				xQueueSendToBack(xQueueVelCommand,&command,(TickType_t)portMAX_DELAY);}
-			if(rx ==42323){	command=0; xQueueSendToBack(xQueueVelCommand,&command,(TickType_t)portMAX_DELAY);}
-			if(rx ==42321){	command=50; xQueueSendToBack(xQueueVelCommand,&command,(TickType_t)portMAX_DELAY);}
-			if(rx ==42327){	command=100; xQueueSendToBack(xQueueVelCommand,&command,(TickType_t)portMAX_DELAY);}
-			if(rx ==42309){	command=150; xQueueSendToBack(xQueueVelCommand,&command,(TickType_t)portMAX_DELAY);}
-			if(rx ==42322){	command=200; xQueueSendToBack(xQueueVelCommand,&command,(TickType_t)portMAX_DELAY);}
+			if(rx ==42317){	command=100;xQueueSendToBack(xQueueVelCommand,&command,(TickType_t)portMAX_DELAY);}
+			if(rx ==42323){	command=0;  xQueueSendToBack(xQueueVelCommand,&command,(TickType_t)portMAX_DELAY);}
+			if(rx ==42321){	command=20; xQueueSendToBack(xQueueVelCommand,&command,(TickType_t)portMAX_DELAY);}
+			if(rx ==42327){	command=40; xQueueSendToBack(xQueueVelCommand,&command,(TickType_t)portMAX_DELAY);}
+			if(rx ==42309){	command=60; xQueueSendToBack(xQueueVelCommand,&command,(TickType_t)portMAX_DELAY);}
+			if(rx ==42322){	command=80; xQueueSendToBack(xQueueVelCommand,&command,(TickType_t)portMAX_DELAY);}
 		}
 	}
 }
@@ -371,350 +393,6 @@ static void prvSendMessage(void *pvParameters){
 	}
 }
 
-static void prvReceiveUsart(void *pvParameters)
-{
-	char ulvar;
-	char buff[75];
-	char vel[10];
-
-	int i = 0;
-	int velTarget;
-
-	DadosB dados;
-
-	for(;;)
-	{
-
-		if(xQueueUsart != 0 && flag_rx == 0 )
-		{
-			xQueueReceive(xQueueUsart, &ulvar,(TickType_t)portMAX_DELAY);
-		}
-
-		if(xQueueDadosB != 0 )
-		 {
-			xQueueReceive( xQueueDadosB, &dados, ( TickType_t )portMAX_DELAY);
-		 }
-
-		if(ulvar == '1' && flag_rx == 0)
-		{
-			sprintf(buff,"Voltas: %d \n",dados.voltasB);
-			prvSendMessageUSART2(buff);
-		}
-		if (ulvar == '2' && flag_rx == 0)
-		{
-			sprintf(buff,"Distancia(m): %d \n",dados.distB);
-			prvSendMessageUSART2(buff);
-		}
-		if (ulvar == '3' && flag_rx == 0)
-		{
-			sprintf(buff,"Velocidade(RPM): %d \n",dados.rpmB);
-			prvSendMessageUSART2(buff);
-		}
-		if (ulvar == '4' && flag_rx == 0)
-		{
-			sprintf(buff,"Velocidade(m/s): %d \n",dados.velB);
-			prvSendMessageUSART2(buff);
-		}
-		if(ulvar == '5' && flag_rx == 0)
-		{
-			flag_rx = 1;
-		}
-
-		if(flag_rx == 1)
-		{
-			xQueueReceive(xQueueUsart, &ulvar,(TickType_t)portMAX_DELAY);
-			vel[i] = ulvar;
-			i++;
-			if(vel[i-1] == '\r')
-			{
-				vel[i-1]= '\0';
-				velTarget = atoi(vel);
-				xQueueSendToBack( xQueueVelTarget, &velTarget, ( TickType_t ) 1);
-				i = 0;
-				flag_rx = 0;
-			}
-		}
-		if (ulvar == '6' && flag_rx == 0)
-		{
-			sprintf(buff,"V:%d | D:%d | RPM:%d | Vel:%d \n",dados.voltasB,dados.distB,dados.rpmB,dados.velB);
-			prvSendMessageUSART2(buff);
-		}
-	}
-}
-
-
-static void prvPWM(void *pvParameters)
-{
-	int pwm = 30;
-
-	for(;;)
-	{
-		/*if(xQueueVelTarget !=0)
-		{
-			xQueueReceive( xQueueVelTarget, &pwm, ( TickType_t ) portMAX_DELAY);
-		}
-		//vTaskDelay( ( TickType_t ) 100 / portTICK_PERIOD_MS  );
-		TIM_SetCompare1(TIM3,30);
-		TIM_SetCompare2(TIM3,0);
-	}
-}
-
-
-
-
 /*-----------------------------------------------------------*/
 
-static void prvSetupRCC( void )
-{
-    /* RCC configuration - 72 MHz */
-    ErrorStatus HSEStartUpStatus;
 
-   RCC_DeInit();
-    /*Enable the HSE*/
-    RCC_HSEConfig(RCC_HSE_ON);
-    /* Wait untill HSE is ready or time out */
-    HSEStartUpStatus = RCC_WaitForHSEStartUp();
-    if(HSEStartUpStatus == SUCCESS)
-    {
-        /* Enable The Prefetch Buffer */
-        FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable);
-        /* 72 MHZ - 2 wait states */
-        FLASH_SetLatency(FLASH_Latency_2);
-
-        /* No division HCLK = SYSCLK */
-        RCC_HCLKConfig(RCC_SYSCLK_Div1);
-        /* PCLK1 = HCLK/2 (36MHz) */
-        RCC_PCLK1Config(RCC_HCLK_Div2);
-        /* PCLK2 = HCLK (72MHz)*/
-        RCC_PCLK2Config(RCC_HCLK_Div1);
-
-        /* Use PLL with HSE=12MHz */
-        RCC_PLLConfig(RCC_PLLSource_HSE_Div1, RCC_PLLMul_6);
-        /* Enable the PLL */
-        RCC_PLLCmd(ENABLE);
-        /* Wait for PLL ready */
-        while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET );
-
-        /* Select the PLL as system clock source */
-        RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
-        /* Wait until PLL is used as system clock */
-        while( RCC_GetSYSCLKSource() != 0x08 );
-    }
-    else
-    {
-        while(1);
-    }
-}
-/*-----------------------------------------------------------*/
-
-static void prvSetupGPIO( void )
-{
-
-    GPIO_InitTypeDef GPIO_InitStructure;
-
-    // GPIO Encoder (B)
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE );
-
-	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_0 |GPIO_Pin_1;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-	// Pinos Motor (A) IN1A | IN2A
-	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6 |GPIO_Pin_7;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE );
-
-	// GPIO Encoder (A)
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-	// GPIO Motor (B) IN1B | IN2B
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 |GPIO_Pin_1;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-}
-
-/*-----------------------------------------------------------*/
-
-static void prvTIMERs( void )
-{
-	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-	TIM_ICInitTypeDef TIM_ICInitStruct;
-
-	// Configuração TIM4 Enconders
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
-    TIM_DeInit(TIM4);
-
-    TIM_TimeBaseStructure.TIM_Period = 62720; //auto-reload 0 até 65535
-	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-	TIM_TimeBaseStructure.TIM_Prescaler = 0; //prescaler de 0 até 65535
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
-
-	TIM_EncoderInterfaceConfig(TIM4, TIM_EncoderMode_TI12,TIM_ICPolarity_Rising,TIM_ICPolarity_Rising);
-	TIM_ICStructInit(&TIM_ICInitStruct);
-	TIM_ICInitStruct.TIM_ICFilter = 0;   /* Filter parameters of input channel */
-	TIM_ICInit(TIM4, &TIM_ICInitStruct); /* Input channel initialization */
-	TIM_SetCounter(TIM4, CNT1_INIT);      /*CNT Set initial value */
-	TIM_ClearFlag(TIM4,TIM_IT_Update);   /* The interrupt sign is clear 0*/
-	TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE); /* Interrupt enable */
-	TIM_Cmd(TIM4,ENABLE);                /* Can make CR register */
-
-	// Configuração TIM2 Enconders
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-	TIM_DeInit(TIM2);
-
-    TIM_TimeBaseStructure.TIM_Period = 62720; //auto-reload 0 até 65535
-	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-	TIM_TimeBaseStructure.TIM_Prescaler = 0; //prescaler de 0 até 65535
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
-
-	TIM_EncoderInterfaceConfig(TIM2, TIM_EncoderMode_TI12,TIM_ICPolarity_Rising,TIM_ICPolarity_Rising);
-	TIM_ICStructInit(&TIM_ICInitStruct);
-	TIM_ICInitStruct.TIM_ICFilter = 0;   /* Filter parameters of input channel */
-	TIM_ICInit(TIM2, &TIM_ICInitStruct); /* Input channel initialization */
-	TIM_SetCounter(TIM2, CNT2_INIT);      /*CNT Set initial value */
-	TIM_ClearFlag(TIM2,TIM_IT_Update);   /* The interrupt sign is clear 0*/
-	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); /* Interrupt enable */
-	TIM_Cmd(TIM2,ENABLE);                /* Can make CR register */
-
-	// Configuração TIM3 PWM Motores
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
-	TIM_OCInitTypeDef TIM_OCInitStructure;
-	TIM_DeInit(TIM3);
-
-	TIM_TimeBaseStructure.TIM_Period = 100; //auto-reload 0 até 65535
-	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-	TIM_TimeBaseStructure.TIM_Prescaler = 711; //prescaler de 0 até 65535
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Down;
-	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
-
-	// IN1A
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
-	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = IN1A; //0 at´e 65535
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Reset;
-	TIM_OC1Init(TIM3, &TIM_OCInitStructure);
-
-	// IN2A
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
-	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = IN2A; //0 at´e 65535
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Reset;
-	TIM_OC2Init(TIM3, &TIM_OCInitStructure);
-
-	// IN1B
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
-	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = IN1B; //0 at´e 65535
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
-	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Reset;
-	TIM_OC3Init(TIM3, &TIM_OCInitStructure);
-
-	// IN2B
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
-	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-	TIM_OCInitStructure.TIM_Pulse = IN2B; //0 at´e 65535
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low;
-	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Reset;
-	TIM_OC4Init(TIM3, &TIM_OCInitStructure);
-	TIM_Cmd(TIM3, ENABLE);
-}
-
-
-
-static void pvrIntrp(void)
-{
-	NVIC_InitTypeDef NVIC_InitStructure;
-	/* Configura o Priority Group com 1 bit */
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-
-	/* Interrupção global do TIM com prioridade 0 sub-prioridade */
-	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-
-	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
-
-	NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-
-	TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);
-
-	// TIM3 Int
-	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-
-	TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
-
-	// Interrupt USART
-	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-
-	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);
-
-}
-
-void prvSetupUSART2( void )
-{
-USART_InitTypeDef USART_InitStructure;
-GPIO_InitTypeDef GPIO_InitStructure;
-
-    /* USART2 is configured as follow:
-        - BaudRate = 115200 baud
-        - Word Length = 8 Bits
-        - 1 Stop Bit
-        - No parity
-        - Hardware flow control disabled (RTS and CTS signals)
-        - Receive and transmit enabled */
-
-    /* Enable GPIOA clock */
-    RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA , ENABLE );
-
-    /* USART Periph clock enable */
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
-
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_2;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_3;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-    USART_InitStructure.USART_BaudRate = 115200;
-    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-    USART_InitStructure.USART_StopBits = USART_StopBits_1;
-    USART_InitStructure.USART_Parity = USART_Parity_No;
-    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;
-
-    /* Configure the USART2 */
-    USART_Init(USART2, &USART_InitStructure);
-    /* Enable the USART2 */
-    USART_Cmd(USART2, ENABLE);
- }

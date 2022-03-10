@@ -1,8 +1,8 @@
-#ifndef FOO_DOT_H
-#define FOO_DOT_H
+#ifndef Func_USART2
+#define Func_USART2
 
-static void prvSendMessageUSART2(char *message);
+void prvSendMessageUSART2(char *message);
 
-static void Float2String(float num, char* str);
+void Float2String(float num, char* str);
 
-#endif
+#endif /* Func_USART2 */

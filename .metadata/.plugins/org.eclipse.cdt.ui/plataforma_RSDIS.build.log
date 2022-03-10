@@ -1,0 +1,10 @@
+19:28:11 **** Incremental Build of configuration Debug for project plataforma_RSDIS ****
+make -j4 all 
+arm-none-eabi-size   plataforma_RSDIS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  28428	    188	   8460	  37076	   90d4	plataforma_RSDIS.elf
+Finished building: default.size.stdout
+ 
+
+19:28:12 Build Finished. 0 errors, 0 warnings. (took 632ms)
+

@@ -1,0 +1,20 @@
+
+
+
+void prvSetupUSART2( void );
+
+
+/* Configure RCC clocks */
+static void prvSetupRCC( void );
+
+/* Configure GPIO. */
+static void prvSetupGPIO( void );
+
+/* Configure Timers */
+static void prvTIMERs( void );
+
+/* Configure Interrupt */
+static void pvrIntrp(void);
+
+/* Configure USART2 */
+static void prvSetupUSART2( void );

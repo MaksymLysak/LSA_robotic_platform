@@ -1,0 +1,5 @@
+#define struct My_encoder_ticks
+{
+   uint16_t tick_esq;
+   uint16_t tick_dir;
+}ticks;

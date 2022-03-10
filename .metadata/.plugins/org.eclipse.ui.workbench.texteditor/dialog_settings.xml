@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="selection" value="d_ticks"/>
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="false"/>
+		<item key="wholeword" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<list key="findhistory">
+			<item value="D_ticks"/>
+			<item value="ticks_old"/>
+			<item value="configMINIMAL_STACK_SIZE"/>
+			<item value="SemaphoreHandle_t"/>
+			<item value="static"/>
+			<item value="sprintf"/>
+			<item value="flag_rx"/>
+			<item value="contRPM"/>
+			<item value="d1F"/>
+			<item value="overflowA"/>
+			<item value="mainDist_DELAY"/>
+			<item value="mainUSART_DELAY"/>
+			<item value="IN1A"/>
+			<item value="tim3"/>
+			<item value="xQueueUsart"/>
+		</list>
+		<list key="replacehistory">
+			<item value="d_ticks"/>
+			<item value="ticksOld"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="851"/>
+		<item key="DIALOG_Y_ORIGIN" value="138"/>
+		<item key="DIALOG_WIDTH" value="348"/>
+		<item key="DIALOG_HEIGHT" value="437"/>
+		<item key="DIALOG_FONT_NAME" value="1|Ubuntu|11.0|0|GTK|1|"/>
+	</section>
+</section>

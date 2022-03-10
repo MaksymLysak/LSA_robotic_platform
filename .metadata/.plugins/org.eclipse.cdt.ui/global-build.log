@@ -1,0 +1,1024 @@
+17:39:48 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:54:32: error: 'pi' undeclared (first use in this function)
+   54 | #define ticks2m(ticks) ((ticks*pi)/(tickRevolution*gearBox))
+      |                                ^~
+../src/main.c:190:13: note: in expansion of macro 'ticks2m'
+  190 |   d_ticks= (ticks2m(v_ticks.esq + v_ticks.dir))/2;
+      |             ^~~~~~~
+../src/main.c:54:32: note: each undeclared identifier is reported only once for each function it appears in
+   54 | #define ticks2m(ticks) ((ticks*pi)/(tickRevolution*gearBox))
+      |                                ^~
+../src/main.c:190:13: note: in expansion of macro 'ticks2m'
+  190 |   d_ticks= (ticks2m(v_ticks.esq + v_ticks.dir))/2;
+      |             ^~~~~~~
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:222:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  222 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:222:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  222 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:222:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  222 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:217:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  217 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:215:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  215 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:214:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  214 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:311:7: warning: unused variable 'buf' [-Wunused-variable]
+  311 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:403:1: warning: "/*" within comment [-Wcomment]
+  403 | /*-----------------------------------------------------------*/
+      |  
+make: *** [src/subdir.mk:34: src/main.o] Error 1
+"make all" terminated with exit code 2. Build might be incomplete.
+17:41:20 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:222:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  222 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:222:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  222 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:222:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  222 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:217:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  217 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:215:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  215 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:214:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  214 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:311:7: warning: unused variable 'buf' [-Wunused-variable]
+  311 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:403:1: warning: "/*" within comment [-Wcomment]
+  403 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:205:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  205 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:205:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  205 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39840	    508	  13928	  54276	   d404	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+17:41:49 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39840	    508	  13928	  54276	   d404	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+17:44:17 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39840	    508	  13928	  54276	   d404	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+17:45:41 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39840	    508	  13928	  54276	   d404	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+17:47:25 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:226:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  226 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:226:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  226 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:226:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  226 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:221:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  221 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:219:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  219 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:218:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  218 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:315:7: warning: unused variable 'buf' [-Wunused-variable]
+  315 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:407:1: warning: "/*" within comment [-Wcomment]
+  407 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:209:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  209 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:209:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  209 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39872	    508	  13928	  54308	   d424	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+17:52:53 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39872	    508	  13928	  54308	   d424	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+17:54:52 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/fun_for_USART.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/fun_for_USART.d" -MT"src/fun_for_USART.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/fun_for_USART.o"
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:225:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:225:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:225:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:220:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  220 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:218:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  218 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:217:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  217 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:314:7: warning: unused variable 'buf' [-Wunused-variable]
+  314 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:406:1: warning: "/*" within comment [-Wcomment]
+  406 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:208:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:208:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39880	    508	  13928	  54316	   d42c	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+17:56:28 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39880	    508	  13928	  54316	   d42c	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+17:59:19 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39880	    508	  13928	  54316	   d42c	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+18:03:17 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39880	    508	  13928	  54316	   d42c	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+18:04:30 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39880	    508	  13928	  54316	   d42c	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+18:14:31 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39880	    508	  13928	  54316	   d42c	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+20:57:31 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39880	    508	  13928	  54316	   d42c	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+21:01:10 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:265:3: error: 'Pwm_real' undeclared (first use in this function); did you mean 'pwm_real'?
+  265 |   Pwm_real.dir=pwm;
+      |   ^~~~~~~~
+      |   pwm_real
+../src/main.c:265:3: note: each undeclared identifier is reported only once for each function it appears in
+../src/main.c:225:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:225:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:225:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:220:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  220 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:218:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  218 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:217:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  217 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:315:7: warning: unused variable 'buf' [-Wunused-variable]
+  315 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:407:1: warning: "/*" within comment [-Wcomment]
+  407 | /*-----------------------------------------------------------*/
+      |  
+make: *** [src/subdir.mk:34: src/main.o] Error 1
+"make all" terminated with exit code 2. Build might be incomplete.
+21:01:27 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:225:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:225:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:225:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:220:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  220 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:218:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  218 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:217:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  217 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:315:7: warning: unused variable 'buf' [-Wunused-variable]
+  315 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:407:1: warning: "/*" within comment [-Wcomment]
+  407 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:208:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:208:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39880	    508	  13928	  54316	   d42c	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+21:01:39 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39880	    508	  13928	  54316	   d42c	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+21:13:42 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:225:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:225:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:225:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:220:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  220 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:218:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  218 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:217:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  217 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:315:7: warning: unused variable 'buf' [-Wunused-variable]
+  315 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:407:1: warning: "/*" within comment [-Wcomment]
+  407 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:208:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:208:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39896	    508	  13928	  54332	   d43c	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+21:16:44 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:225:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:225:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:225:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:220:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  220 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:218:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  218 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:217:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  217 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:315:7: warning: unused variable 'buf' [-Wunused-variable]
+  315 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:407:1: warning: "/*" within comment [-Wcomment]
+  407 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:208:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:208:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39920	    508	  13928	  54356	   d454	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+21:19:27 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39920	    508	  13928	  54356	   d454	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+21:23:30 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:190:9: warning: unused variable 'temp2' [-Wunused-variable]
+  190 |   float temp2=(temp1*wheelDiameter*M_PI)/(gearBox*tickRevolution);
+      |         ^~~~~
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:227:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  227 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:227:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  227 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:227:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  227 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:222:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  222 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:220:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  220 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:219:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  219 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:317:7: warning: unused variable 'buf' [-Wunused-variable]
+  317 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:409:1: warning: "/*" within comment [-Wcomment]
+  409 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:210:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  210 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:210:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  210 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39920	    508	  13928	  54356	   d454	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+21:35:37 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:190:9: warning: unused variable 'temp2' [-Wunused-variable]
+  190 |   float temp2=(temp1*wheelDiameter*M_PI)/(gearBox*tickRevolution);
+      |         ^~~~~
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:225:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:225:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:225:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:220:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  220 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:218:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  218 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:217:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  217 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:315:7: warning: unused variable 'buf' [-Wunused-variable]
+  315 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:407:1: warning: "/*" within comment [-Wcomment]
+  407 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:208:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:208:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39920	    508	  13928	  54356	   d454	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+21:41:38 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:190:9: warning: unused variable 'temp2' [-Wunused-variable]
+  190 |   float temp2=(temp1*wheelDiameter*M_PI)/(gearBox*tickRevolution);
+      |         ^~~~~
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:225:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:225:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:225:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:220:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  220 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:218:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  218 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:217:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  217 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:315:7: warning: unused variable 'buf' [-Wunused-variable]
+  315 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:407:1: warning: "/*" within comment [-Wcomment]
+  407 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:208:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:208:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39936	    508	  13928	  54372	   d464	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+21:43:58 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39936	    508	  13928	  54372	   d464	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+21:46:01 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:192:9: warning: unused variable 'diff' [-Wunused-variable]
+  192 |   float diff=temp3-temp2;
+      |         ^~~~
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:227:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  227 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:227:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  227 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:227:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  227 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:222:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  222 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:220:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  220 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:219:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  219 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:317:7: warning: unused variable 'buf' [-Wunused-variable]
+  317 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:409:1: warning: "/*" within comment [-Wcomment]
+  409 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:210:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  210 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:210:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  210 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39936	    508	  13928	  54372	   d464	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+21:49:53 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:192:9: warning: unused variable 'diff' [-Wunused-variable]
+  192 |   float diff=temp3-temp2;
+      |         ^~~~
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:229:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  229 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:229:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  229 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:229:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  229 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:224:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  224 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:222:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  222 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:221:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  221 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:319:7: warning: unused variable 'buf' [-Wunused-variable]
+  319 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:411:1: warning: "/*" within comment [-Wcomment]
+  411 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:212:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  212 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:212:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  212 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39920	    508	  13928	  54356	   d454	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+21:55:40 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:225:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:225:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:225:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:220:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  220 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:218:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  218 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:217:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  217 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:315:7: warning: unused variable 'buf' [-Wunused-variable]
+  315 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:407:1: warning: "/*" within comment [-Wcomment]
+  407 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:208:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:208:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39912	    508	  13928	  54348	   d44c	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+21:57:08 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:192:9: warning: unused variable 'd_theta_origin' [-Wunused-variable]
+  192 |   float d_theta_origin = ((float)(ticks2m(v_ticks.dir - v_ticks.esq)))/baseDist;
+      |         ^~~~~~~~~~~~~~
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:225:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:225:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:225:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  225 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:220:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  220 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:218:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  218 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:217:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  217 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:315:7: warning: unused variable 'buf' [-Wunused-variable]
+  315 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:407:1: warning: "/*" within comment [-Wcomment]
+  407 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:208:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:208:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  208 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39880	    508	  13928	  54316	   d42c	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+22:02:15 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:177:11: warning: unused variable 'odom' [-Wunused-variable]
+  177 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:221:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  221 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:221:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  221 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:221:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  221 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:216:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  216 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:214:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  214 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:213:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  213 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:311:7: warning: unused variable 'buf' [-Wunused-variable]
+  311 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:403:1: warning: "/*" within comment [-Wcomment]
+  403 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:204:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  204 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:204:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  204 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39856	    508	  13928	  54292	   d414	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 
+22:17:25 **** Incremental Build of configuration Debug for project LASET_FreeRTOS ****
+make all 
+arm-none-eabi-gcc "../src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32F1 -DSTM32F103RBTx -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -c -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/StdPeriph_Driver/inc" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/core" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/CMSIS/device" -I"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include" -Os -ffunction-sections -Wall -fstack-usage -MMD -MP -MF"src/main.d" -MT"src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "src/main.o"
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:170:11: warning: unused variable 'odom' [-Wunused-variable]
+  170 |  Odometry odom=init_odom_var();
+      |           ^~~~
+../src/main.c: In function 'prvControlador':
+../src/main.c:214:47: warning: unused variable 'buf_d' [-Wunused-variable]
+  214 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                               ^~~~~
+../src/main.c:214:34: warning: unused variable 'buf_erro' [-Wunused-variable]
+  214 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                                  ^~~~~~~~
+../src/main.c:214:24: warning: unused variable 'buf_p' [-Wunused-variable]
+  214 |  char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
+      |                        ^~~~~
+../src/main.c:209:9: warning: unused variable 'pwm_des' [-Wunused-variable]
+  209 |  My_PWM pwm_des, pwm_real;
+      |         ^~~~~~~
+../src/main.c:207:30: warning: unused variable 'delta_ticks_des' [-Wunused-variable]
+  207 |  Var_ticks delta_ticks_real, delta_ticks_des;
+      |                              ^~~~~~~~~~~~~~~
+../src/main.c:206:12: warning: variable 'ticks_old' set but not used [-Wunused-but-set-variable]
+  206 |  Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
+      |            ^~~~~~~~~
+../src/main.c: In function 'prvReadUsart':
+../src/main.c:304:7: warning: unused variable 'buf' [-Wunused-variable]
+  304 |  char buf[30];
+      |       ^~~
+../src/main.c: At top level:
+../src/main.c:396:1: warning: "/*" within comment [-Wcomment]
+  396 | /*-----------------------------------------------------------*/
+      |  
+../src/main.c: In function 'prvOdometryTrack':
+../src/main.c:197:23: warning: '%s' directive writing up to 14 bytes into a region of size between 11 and 25 [-Wformat-overflow=]
+  197 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |                       ^~                ~~~~~
+../src/main.c:197:3: note: 'sprintf' output between 11 and 53 bytes into a destination of size 30
+  197 |   sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "LASET_FreeRTOS.elf" @"objects.list"   -mcpu=cortex-m3 -T"/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/LinkerScript.ld" --specs=nosys.specs -Wl,-Map="LASET_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: LASET_FreeRTOS.elf
+ 
+arm-none-eabi-size   LASET_FreeRTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  39856	    508	  13916	  54280	   d408	LASET_FreeRTOS.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S  LASET_FreeRTOS.elf  > "LASET_FreeRTOS.list"
+Finished building: LASET_FreeRTOS.list
+ 
+arm-none-eabi-objcopy  -O binary  LASET_FreeRTOS.elf  "LASET_FreeRTOS.bin"
+Finished building: LASET_FreeRTOS.bin
+ 

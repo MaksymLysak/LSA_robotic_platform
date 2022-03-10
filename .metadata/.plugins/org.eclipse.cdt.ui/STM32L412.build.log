@@ -1,0 +1,10 @@
+20:46:22 **** Incremental Build of configuration Debug for project STM32L412 ****
+make -j4 all 
+arm-none-eabi-size   STM32L412.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29580	    188	   8452	  38220	   954c	STM32L412.elf
+Finished building: default.size.stdout
+ 
+
+20:46:22 Build Finished. 0 errors, 0 warnings. (took 627ms)
+

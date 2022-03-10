@@ -41,7 +41,9 @@ src/main.o: ../src/main.c \
  /home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include/task.h \
  /home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/FreeRTOS/include/queue.h \
  /home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc/struct_data.h \
- /home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc/fun_for_USART.h
+ /home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc/init_config.h \
+ /home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc/fun_for_USART.h \
+ /home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc/odometry_msg.h
 
 /home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc/stm32f10x_it.h:
 
@@ -127,4 +129,8 @@ src/main.o: ../src/main.c \
 
 /home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc/struct_data.h:
 
+/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc/init_config.h:
+
 /home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc/fun_for_USART.h:
+
+/home/maksym/STM32CubeIDE/workspace_1.8.0/LASET_FreeRTOS/inc/odometry_msg.h:

@@ -1,0 +1,14 @@
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <stdint.h>
+
+
+typedef struct
+{  uint16_t esq;
+   uint16_t dir;
+}Num_ticks;
+
+typedef struct
+{  int16_t esq;
+   int16_t dir;
+}Var_ticks;

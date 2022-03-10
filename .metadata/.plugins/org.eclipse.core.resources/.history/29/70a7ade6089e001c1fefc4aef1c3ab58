@@ -1,0 +1,5 @@
+
+
+static void prvSendMessageUSART2(char *message);
+
+static void Float2String(float num, char* str);

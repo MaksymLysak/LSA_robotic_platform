@@ -1,0 +1,6 @@
+init_config.c:23:7:prvSetupRCC	8	static
+init_config.c:66:7:prvSetupGPIO	16	static
+init_config.c:103:7:prvTIMERs	64	static
+init_config.c:193:7:pvrIntrp	16	static
+init_config.c:236:6:prvSetupUSART2	32	static
+init_config.c:14:6:prvInitial_configuration	8	static
