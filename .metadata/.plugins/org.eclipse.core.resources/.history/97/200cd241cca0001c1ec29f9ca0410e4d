@@ -191,23 +191,11 @@ static void prvOdometryTrack(void *pvParameters){
 		x+=d_x;
 		y+=d_y;
 
-		odom.pose.position.x +=d_x;
-		odom.pose.position.y +=d_x;
-		odom.pose.orientation.w=cos(theta * 0.5);
-		odom.pose.orientation.z=sin(theta * 0.5);
-		odom.twist.linear.x=d_ticks*100;
-		odom.twist.angular.z=d_theta_i*100;
-
-
-
-
 		Float2String(x, buf_x);
 		Float2String(y, buf_y);
 		Float2String(theta, buf_th);
 		sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
 		xQueueSendToBack(xQueueMessageOut,&buf,(TickType_t)1);
-
-
 	}
 }
 
