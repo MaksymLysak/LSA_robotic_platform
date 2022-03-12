@@ -1,9 +1,0 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-
-
-typedef struct
-{  uint16_t esq;
-   uint16_t dir;
-}Num_ticks;

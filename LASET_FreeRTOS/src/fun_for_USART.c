@@ -18,7 +18,7 @@ uint16_t cont_aux=0;
     }
 }
 
- void Float2String(float num, char* str)
+ void float2String(float num, char* str)
 {
 	char *tmpSign = (num < 0) ? "-" : "";
 	float tmpVal = (num < 0) ? -num : num;

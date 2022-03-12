@@ -14115,3 +14115,16 @@ java.lang.IllegalArgumentException: Width and height must be >= 0
 
 2022-03-10 20:45:21,188 [INFO] Activator:178 - !SESSION log4j initialized
 2022-03-10 20:45:37,641 [ERROR] AnalyticsContext:980 - The ST intranet updater server is unknown: mcucrossselector.codex.cro.st.com
+2022-03-11 11:47:42,750 [INFO] Activator:177 - 
+
+
+2022-03-11 11:47:42,766 [INFO] Activator:178 - !SESSION log4j initialized
+2022-03-11 11:47:54,213 [ERROR] AnalyticsContext:980 - The ST intranet updater server is unknown: mcucrossselector.codex.cro.st.com
+2022-03-11 11:47:54,641 [ERROR] ConfigurationRetriever:139 - IOException on connection: No subject alternative DNS name matching sw-center.st.com found.
+2022-03-11 11:47:54,667 [ERROR] ConfigurationRetriever:139 - IOException on connection: No subject alternative DNS name matching sw-center.st.com found.
+2022-03-11 11:47:54,687 [ERROR] ConfigurationRetriever:139 - IOException on connection: No subject alternative DNS name matching sw-center.st.com found.
+2022-03-12 00:21:13,683 [INFO] Activator:177 - 
+
+
+2022-03-12 00:21:13,700 [INFO] Activator:178 - !SESSION log4j initialized
+2022-03-12 00:21:25,929 [ERROR] AnalyticsContext:980 - The ST intranet updater server is unknown: mcucrossselector.codex.cro.st.com

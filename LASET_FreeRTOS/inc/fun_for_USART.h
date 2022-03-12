@@ -3,6 +3,6 @@
 
 void prvSendMessageUSART2(char *message);
 
-void Float2String(float num, char* str);
+void float2String(float num, char* str);
 
 #endif /* Func_USART2 */

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="d_ticks"/>
+		<item key="selection" value="xQueueOdometry"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="xQueueOdometry"/>
+			<item value="odometry_msg"/>
+			<item value="tskIDLE_PRIORITY"/>
+			<item value="Float2String"/>
 			<item value="D_ticks"/>
 			<item value="ticks_old"/>
 			<item value="configMINIMAL_STACK_SIZE"/>
@@ -19,12 +23,9 @@
 			<item value="d1F"/>
 			<item value="overflowA"/>
 			<item value="mainDist_DELAY"/>
-			<item value="mainUSART_DELAY"/>
-			<item value="IN1A"/>
-			<item value="tim3"/>
-			<item value="xQueueUsart"/>
 		</list>
 		<list key="replacehistory">
+			<item value="float2String"/>
 			<item value="d_ticks"/>
 			<item value="ticksOld"/>
 		</list>

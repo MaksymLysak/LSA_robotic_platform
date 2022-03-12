@@ -1,20 +1,3 @@
-/**
-  ******************************************************************************
-  * @file    main.c
-  * @author  3S0 FreeRTOs
-  * @version V1.0
-  * @date    24/10/2017
-  * @brief   FreeRTOS Example project.
-  ******************************************************************************
-*/
-
-
-/*
- *
- * LASET
- * 2021-2022
- *
- */
 
 
 /* Standard includes. */
@@ -22,12 +5,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <math.h>
+/*STM32 and FreeRTOS includes*/
 #include "stm32f10x_it.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
 #include "queue.h"
 
+/* My includes */
 #include "struct_data.h"
 
 #include "init_config.h"
@@ -36,23 +22,24 @@
 
 #include "odometry_msg.h"
 
-#include <math.h>
+
 
 
 /* Task priorities. */
-#define mainUSART_TASK_PRIORITY	( tskIDLE_PRIORITY + 1)
-#define mainEncoder_TASK_PRIORITY ( tskIDLE_PRIORITY + 1)
-#define mainDistance_TASK_PRIORITY ( tskIDLE_PRIORITY + 1)
+#define normalTaskPriority	( tskIDLE_PRIORITY + 1)
 
 /* Max length for messages*/
-#define msg_length 30
+#define msg_length 120
 
-#define wheelDiameter 0.07
+/* Odometry parameter */
+#define wheelDiameter 0.069
 #define baseDist 0.189
 #define tickRevolution 64
 #define gearBox 70
-#define ticks2m(ticks) ((ticks*wheelDiameter*M_PI)/(tickRevolution*gearBox))
 
+/* Converters between ticks and meters*/
+#define ticks2m(ticks) ((ticks*wheelDiameter*M_PI)/(tickRevolution*gearBox))
+#define m2ticks(m) (m*tickRevolution*gearBox)/(wheelDiameter*M_PI)
 
 
 /* Function Declaration */
@@ -86,9 +73,11 @@ QueueHandle_t xQueueUsart;
 QueueHandle_t xQueuePWM;
 QueueHandle_t xQueueMessageOut;
 QueueHandle_t xQueueVelCommand;
+//QueueHandle_t xQueueOdometry;
 
 /* Semaphers*/
-SemaphoreHandle_t xSemaphore_Ticks;
+SemaphoreHandle_t xSemaphore_Ticks1;
+SemaphoreHandle_t xSemaphore_Ticks2;
 
 /*-----------------------------------------------------------*/
 
@@ -101,27 +90,33 @@ int main( void )
 	xQueueTicks 	 = xQueueCreate( 5, 		sizeof( Var_ticks )		  ); /* Queue to send Encoder's ticks */
 	xQueueUsart 	 = xQueueCreate( msg_length,sizeof( char ) 			  ); /* Queue to send received character from ISR */
 	xQueuePWM 		 = xQueueCreate( 2,  		sizeof( My_PWM ) 		  ); /* Queue to send PWM*/
-	xQueueMessageOut = xQueueCreate( 10, 		sizeof( char )*60 ); /* Queue to send PWM*/
+	xQueueMessageOut = xQueueCreate( 10, 		sizeof( char )*msg_length ); /* Queue to send PWM*/
 	xQueueVelCommand = xQueueCreate( 5, 		sizeof( uint8_t )      	  ); /* Queue to send velocity command to controller*/
-	if(( xQueueTicks == NULL )&&( xQueueUsart == NULL )&&( xQueuePWM == NULL )&&( xQueueMessageOut == NULL )&&( xQueueVelCommand == NULL ))
+//	xQueueVelCommand = xQueueCreate( 5, 		sizeof( Twist )      	  ); /* Queue to send velocity command to controller*/
+//	xQueueOdometry   = xQueueCreate( 5, 		sizeof( Odometry )     	  ); /* Queue to send odometry data*/
+
+	if(/*( xQueueOdometry == NULL )&&*/( xQueueTicks == NULL )&&( xQueueUsart == NULL )&&( xQueuePWM == NULL )&&( xQueueMessageOut == NULL )&&( xQueueVelCommand == NULL ))
 	{/* Queue was not created and must not be used. */
 		return 0;
 	}
 
 	/* Create semaphore */
-	xSemaphore_Ticks = xSemaphoreCreateBinary();
-	if( xSemaphore_Ticks == NULL )/* There was insufficient FreeRTOS heap available for the semaphore to*/
-	{						/* be created successfully. */
+	xSemaphore_Ticks1 = xSemaphoreCreateBinary();
+	xSemaphore_Ticks2 = xSemaphoreCreateBinary();
+	if(( xSemaphore_Ticks1 == NULL )&&( xSemaphore_Ticks2 == NULL ))
+	{/* There was insufficient FreeRTOS heap available for the semaphore to be created successfully */
 		return 0;
 	}
 
+	xSemaphoreGive( xSemaphore_Ticks1 );
+
 	/* Create Tasks */
-    xTaskCreate(prvReadEncoders, "EncoderReads", configMINIMAL_STACK_SIZE, NULL, mainEncoder_TASK_PRIORITY, &HandleTask1);
-    xTaskCreate(prvControlador, "Controlador", configMINIMAL_STACK_SIZE+300, NULL, mainEncoder_TASK_PRIORITY,&HandleTask2);
-    xTaskCreate(prvReadUsart, "ReadUsart", configMINIMAL_STACK_SIZE+200, NULL, mainDistance_TASK_PRIORITY, &HandleTask3);
-	xTaskCreate(prvMotorDrive, "MotorDrive", configMINIMAL_STACK_SIZE, NULL, mainDistance_TASK_PRIORITY, &HandleTask4);
-	xTaskCreate(prvSendMessage, "SendUsart", configMINIMAL_STACK_SIZE, NULL, mainDistance_TASK_PRIORITY, &HandleTask5);
-	xTaskCreate(prvOdometryTrack, "Odometry", configMINIMAL_STACK_SIZE+200, NULL, mainDistance_TASK_PRIORITY, &HandleTask6);
+    xTaskCreate(prvReadEncoders, "EncoderReads",configMINIMAL_STACK_SIZE, NULL, normalTaskPriority, &HandleTask1);
+    xTaskCreate(prvControlador, "Controlador", 	configMINIMAL_STACK_SIZE+300, NULL, normalTaskPriority,&HandleTask2);
+    xTaskCreate(prvReadUsart, "ReadUsart", 		configMINIMAL_STACK_SIZE+200, NULL, normalTaskPriority, &HandleTask3);
+	xTaskCreate(prvMotorDrive, "MotorDrive", 	configMINIMAL_STACK_SIZE, NULL, normalTaskPriority, &HandleTask4);
+	xTaskCreate(prvSendMessage, "SendUsart", 	configMINIMAL_STACK_SIZE, NULL, normalTaskPriority, &HandleTask5);
+	xTaskCreate(prvOdometryTrack, "Odometry", 	configMINIMAL_STACK_SIZE+200, NULL, normalTaskPriority, &HandleTask6);
 
     /* Start the scheduler. */
 	vTaskStartScheduler();
@@ -134,21 +129,23 @@ int main( void )
 
 static void prvReadEncoders(void *pvParameters)
 {
-	Num_ticks ticks, ticksOld; ticksOld.dir=0; ticksOld.esq=0;
+	Num_ticks ticks, ticksOld;
 	Var_ticks d_ticks;
+
+	ticksOld.dir=0; ticksOld.esq=0;
 
 	for(;;)
 	{
-		ticks.dir =TIM4->CNT;	//Guardar os valores dos Ticks encoderA
-		ticks.esq =TIM2->CNT;	//Guardar os valores dos Ticks encoderB
+		ticks.dir =TIM4->CNT;	/* Save value of Ticks from encoderA */
+		ticks.esq =TIM2->CNT;	/* Save value of Ticks from encoderB */
 
 		/* Calculate ticks variation of each encoder */
 		d_ticks.esq = ticks.esq - ticksOld.esq;
-		if(d_ticks.esq/2000){
+		if(d_ticks.esq/2000){  /* Overflow correction */
 			d_ticks.esq=d_ticks.esq/abs(d_ticks.esq)*(62720-MAX(ticks.esq,ticksOld.esq)+MIN(ticks.esq,ticksOld.esq));
 		}
 		d_ticks.dir = ticks.dir - ticksOld.dir;
-		if(d_ticks.dir/2000){
+		if(d_ticks.dir/2000){	/* Overflow correction */
 			d_ticks.dir=d_ticks.dir/abs(d_ticks.dir)*(62720-MAX(ticks.esq,ticksOld.dir)+MIN(ticks.esq,ticksOld.dir));
 		}
 
@@ -169,123 +166,143 @@ static void prvOdometryTrack(void *pvParameters){
 
 	Odometry odom=init_odom_var();
 	Var_ticks v_ticks;
-	float d_ticks, d_theta_i, theta=0, d_x=0, d_y=0, x=0, y=0;
-	char buf_x[15],buf_y[15],buf_th[15],buf[msg_length];
+	float d_s, d_theta_i, theta=0, d_x=0, d_y=0;
+//	char buf_x[15],buf_y[15],buf_th[15],buf[msg_length];
 
 
 	for(;;){
+		/* Receive data, Give permition to next task to read and delete */
+		xSemaphoreTake( xSemaphore_Ticks1, ( TickType_t ) portMAX_DELAY );
 		xQueuePeek( xQueueTicks, &v_ticks , ( TickType_t ) portMAX_DELAY );
-		xSemaphoreGive( xSemaphore_Ticks );
+		xSemaphoreGive( xSemaphore_Ticks2 );
 
-		/* encoder variation */
-		d_ticks = ticks2m(	((float)v_ticks.esq + (float)v_ticks.dir)/2	);
+		/* Linear variation */
+		d_s = ticks2m(	((float)v_ticks.esq + (float)v_ticks.dir)/2	);
 
+		/* Angular variation */
 		d_theta_i = ticks2m(((float)v_ticks.dir - (float)v_ticks.esq)/baseDist);
 
+		/* Robot orientation */
 		theta += d_theta_i;
 
-
-		d_x = d_ticks*cos(theta);
-		d_y = d_ticks*sin(theta);
-
-		x+=d_x;
-		y+=d_y;
+		/* Linear components of motion */
+		d_x = d_s*cos(theta);
+		d_y = d_s*sin(theta);
 
 		odom.pose.position.x +=d_x;
 		odom.pose.position.y +=d_x;
 		odom.pose.orientation.w=cos(theta * 0.5);
 		odom.pose.orientation.z=sin(theta * 0.5);
-		odom.twist.linear.x=d_ticks*100;
+		odom.twist.linear.x=d_s*100;
 		odom.twist.angular.z=d_theta_i*100;
 
+		/* Send out */
+		/* xQueueSendToBack(xQueueOdometry,&odom,(TickType_t)portMAX_DELAY); */
 
 
-
-		Float2String(x, buf_x);
-		Float2String(y, buf_y);
-		Float2String(theta, buf_th);
-		sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
-		xQueueSendToBack(xQueueMessageOut,&buf,(TickType_t)1);
-
-
+//		float2String(odom.pose.position.x, buf_x);
+//		float2String(odom.pose.position.y, buf_y);
+//		float2String(theta, buf_th);
+//		sprintf(buf,"X:%s Y:%s th:%s\n",buf_x,buf_y,buf_th);
+//		xQueueSendToBack(xQueueMessageOut,&buf,(TickType_t)1);
 	}
 }
 
 /*-----------------------------------------------------------*/
 
+#define mDimLen 10
 static void prvControlador(void *pvParametrs)
 {
-	Num_ticks ticks_old, ticks_new; ticks_new.esq=0; ticks_new.dir=0; ticks_old.esq=0;
 	Var_ticks delta_ticks_real, delta_ticks_des;
 	uint8_t command=0;
 	My_PWM pwm_des, pwm_real;
+//	My_PWM pwm; // iniciar a zero
+//	Twist cmd_vel;
+//	cmd_vel.angular.z=0;
+//	cmd_vel.linear.x = 0;
+
 	pwm_real.esq=0;
-
-	float erro=0, pwm=0,P=0;
-
-	char buf[msg_length], buf_p[15],buf_erro[15],buf_d[15],buf_v[15];
 
 	int16_t veloc=0, vel_final=0;
 
+	float erro=0,erro_ant=0, erro_acum=0, float_pwm=0,P=0,Kp=0.02,D=0,Kd=0.14,I=0, Ki=0.0002, PID=0;
+
+	/* debug variabels*/
+	char buf_erro[mDimLen], buf_erro_ant[mDimLen], buf_P[mDimLen], buf_I[mDimLen], buf_D[mDimLen],buf_PID[mDimLen],buf_pwm[mDimLen];
+	char buf[msg_length];
+
+
+
 	for(;;){
 
-		/* Update ticks*/
-		ticks_old.esq = ticks_new.esq; /* safe previous ticks*/
-		xSemaphoreTake( xSemaphore_Ticks, ( TickType_t ) portMAX_DELAY );
+		/* Receive ticks variation*/
+		xSemaphoreTake( xSemaphore_Ticks2, ( TickType_t ) portMAX_DELAY );
 		xQueueReceive(xQueueTicks,(void*)&delta_ticks_real,(TickType_t)portMAX_DELAY); /*Receive ticks from encoders*/
-		/* ticks variation in deltaT*/
+		xSemaphoreGive( xSemaphore_Ticks1 );
 
-		//delta_ticks_real.dir = ticks_new.dir - ticks_old.dir;
 
 		veloc=delta_ticks_real.esq;
 
 		/* Receive Velocity command */
 		if(xQueueReceive(xQueueVelCommand,&command,(TickType_t)1)== pdPASS ){
-			//delta_ticks_des.esq=command;
-			//delta_ticks_des.dir=command;
 			vel_final=command;
 		}
+//		if(xQueueReceive(xQueueVelCommand,&cmd_vel,(TickType_t)1)== pdPASS ){
+//			delta_ticks_des.esq = m2ticks(cmd_vel.linear.x/100) - m2ticks(cmd_vel.angular.z/100)*baseDist;
+//			delta_ticks_des.dir = m2ticks(cmd_vel.linear.x/100) + m2ticks(cmd_vel.angular.z/100)*baseDist;
+//
+//			/* Define motor direction pins */
+//			pwm.en1_esq=0;
+//			pwm.en2_esq=0;
+//			if (delta_ticks_des.esq<0)	pwm.en2_esq=1;
+//			if (delta_ticks_des.esq>0)  pwm.en1_esq=1;
+//			pwm.en1_dir=0;
+//			pwm.en2_dir=0;
+//			if (delta_ticks_des.esq<0)	pwm.en2_esq=1;
+//			if (delta_ticks_des.esq>0)	pwm.en1_esq=1;
+//
+//			/* Remove sign*/
+//			delta_ticks_des.esq = abs(delta_ticks_des.esq);
+//			delta_ticks_des.dir = abs(delta_ticks_des.dir);
+//		}
 
-		/*--------------------------------------------------------*/
-		erro = (float)(vel_final-veloc);
 
-		if (erro!=0){
-			float abs_erro=abs(erro);
-			if		(abs_erro>30)	{P=7;}
-			else if	(abs_erro>20)	{P=5;}
-			else if	(abs_erro>15)	{P=2;}
-			else if	(abs_erro>10)	{P=1;}
-			else if	(abs_erro>5)	{P=0.5;}
-			else if	(abs_erro>0)	{P=0.1;}
-			else 					{P=0;}
-			P=P*(erro/abs_erro);
-			pwm=MAX(0,MIN(100,pwm+P));
+		/*--- Controller ---*/
+		erro_ant=erro;
+		erro = ((float)vel_final-(float)veloc);
+
+		P=erro*Kp;
+		erro_acum+=erro;
+		I=Ki*erro_acum;
+		D=Kd*(erro-erro_ant);
+
+		PID=MAX(-10,MIN(10,P+I+D));
+
+		if (vel_final==0){float_pwm =0;}
+		else{
+			float_pwm=MAX(0,MIN(100,float_pwm+PID));
 		}
 
-		pwm_real.esq=pwm;
-		pwm_real.dir=pwm;
 
 
-		/*--------------------------------------------------------*/
+		pwm_real.esq=float_pwm;
+		pwm_real.dir=0;
+		/*--- End controller ---*/
 
-
-		//pwm_real.dir=MAX(0,MIN(100,pwm_real.dir));
-		Float2String(pwm, buf_v);
-		//Float2String(erro, buf_erro);
-
-		//sprintf(buf,"%d	%s	%s	%s\n",veloc,buf_erro, buf_p,buf_v);
-		sprintf(buf,"%s\n",buf_v);
-		//xQueueSendToBack(xQueueMessageOut,&buf,(TickType_t)1);
-
-
-		/* Send P*/
+		/* Send PWM*/
 		xQueueSendToBack(xQueuePWM,&pwm_real,(TickType_t)portMAX_DELAY);
 
-//		teste = (float)delta_ticks.esq*3.14*0.07/(64*70);
-//		teste = 500*3.14*0.07/(64*70);
+		/* debug */
+		float2String(erro, buf_erro);
+		float2String(erro_ant, buf_erro_ant);
+		float2String(P, buf_P);
+		float2String(I, buf_I);
+		float2String(D, buf_D);
+		float2String(PID, buf_PID);
+		float2String(float_pwm, buf_pwm);
 
-		//vTaskDelay( ( `TickType_t ) 10 / portTICK_PERIOD_MS  );
-		//Float2String(teste,buf);
+		sprintf(buf,"V:%d  E:%s  Ea:%s  P:%s  I:%s  D:%s  PID:%s  PWM:%s\n",veloc,buf_erro,buf_erro_ant,buf_P,buf_I,buf_D,buf_PID,buf_pwm);
+		xQueueSendToBack(xQueueMessageOut,&buf,(TickType_t)1);
 	}
 }
 
@@ -303,8 +320,6 @@ static void prvMotorDrive(void *pvParameters){
 
 	for(;;){
 		xQueueReceive( xQueuePWM, &pwm,( TickType_t ) portMAX_DELAY );
-		//sprintf(buf,"ESQ:%d Dir:%d\n", pwm.esq,pwm.dir);//pwm.esq,pwm.dir);
-		//xQueueSendToBack(xQueueMessageOut,&buf,(TickType_t)2);
 
 		TIM_SetCompare2(TIM3,pwm.dir); // laranja perto do cabo
 		TIM_SetCompare1(TIM3,pwm.esq); // azul  mais longe do cabo
@@ -313,7 +328,6 @@ static void prvMotorDrive(void *pvParameters){
 
 static void prvReadUsart(void *pvParameters)
 {
-	char buf[30];
 	uint8_t command=0;
 
 	uint16_t rx;
@@ -336,6 +350,7 @@ static void prvSendMessage(void *pvParameters){
 	char mes[msg_length];
 
 	for(;;){
+		/* Receive and send the message */
 		xQueueReceive( xQueueMessageOut, &mes,( TickType_t ) portMAX_DELAY );
 		prvSendMessageUSART2(mes);
 
@@ -343,68 +358,4 @@ static void prvSendMessage(void *pvParameters){
 }
 
 /*-----------------------------------------------------------*/
-
-
-
-
-
-// Controlo PID
-
-/*static void prvPID(void *pvParameters)
-{
-	char buff[50];
-	int pwmB; // saída pwm
-	int velOut = 0;
-	int velB; // velocidade do motor
-	int lastErroB = 0; // último erro
-	int velB_target = 2; // velocidade requirida
-	int erroB = 0; // erro atual
-	int I_erroB = 0; // ganho integral
-	int D_erroB = 0; // ganho derivativo
-	// Constantes
-	int Kp = 1;
-	int Ki = 1;
-	int Kd = 0;
-
-	DadosB dados;
-
-	for(;;)
-	{
-
-		xQueueReceive(xQueueDadosB,&dados,(TickType_t)portMAX_DELAY);
-
-		dados.velB = velB;
-		//P = ref - target
-		erroB = velB - velB_target;
-		//D = (P - erro)
-		D_erroB = erroB - lastErroB;
-		//I = I + P
-		I_erroB = I_erroB + erroB;
-
-		velOut = (Kp*erroB + Ki*I_erroB + Kd*D_erroB);
-
-		velOut = velOut/100;
-
-		if(I_erroB < -2)
-		{
-			I_erroB =-2;
-		}
-
-		if(I_erroB > 2)
-		{
-			I_erroB = 2;
-		}
-
-
-
-//		sprintf(buff,"%d  %d  %d  %d  %d \r\n",erroB,D_erroB,I_erroB,velOut,velB);
-//		prvSendMessageUSART2(buff);
-		lastErroB = erroB;
-
-
-	}
-}
-
-/*-----------------------------------------------------------*/
-
 
